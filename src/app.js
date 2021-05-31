@@ -1,0 +1,1 @@
+const amountOfPokemons = 20
