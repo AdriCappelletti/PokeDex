@@ -99,8 +99,8 @@ header{
 
 .pokemon__front img{
     padding: .5em;
-    width: 45%;
-    height: 40%;
+    width: 140px;
+    height: 140px;
     background-color: #fff;
     border-radius: 50%;
 }

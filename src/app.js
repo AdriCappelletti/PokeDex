@@ -1,24 +1,33 @@
+const $btnNext = document.querySelector('.btn-next')
 const amountOfPokemons = 20;
 let currentPage = 0;
 
 
-const fetchApi = (pokemon) => {
-    fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}?limit=0&offset=${currentPage}`)
+const fetchApi = () => {
+    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${currentPage}`)
     .then((response) => {
         return response.json();
     })
     .then((responseJSON) => {
-        createPokemonFront(amountOfPokemons, responseJSON)
+        handlePokemonData(responseJSON)
     }).catch(error=>{
         console.error(error)
     });
 };
 
-const handlePokemons = () =>{
-    for (let i = currentPage; i < currentPage + 20; i++) {
-        fetchApi(i+1)
+const handlePokemonData = (pokemonData) =>{
+    for (let i = 0; i < pokemonData["results"].length; i++) {
+        const keys = Object.keys(pokemonData.results)
+        let index = keys[i]
+        createPokemonFront(index,pokemonData) 
     }
 }
 
-handlePokemons()
+fetchApi()
+
+
+$btnNext.addEventListener('click', ()=>{
+    currentPage= currentPage+20
+    fetchApi()
+})
 
