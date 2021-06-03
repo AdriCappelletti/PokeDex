@@ -1,3 +1,4 @@
+
 const $btnPrev = document.querySelector(".btn-prev");
 const $btnNext = document.querySelector(".btn-next");
 const $mainContainer = document.querySelector("#pokemons");
@@ -9,10 +10,12 @@ let currentPage = 0;
 
 const fetchApi = () => {
     fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${currentPage}`)
+
     .then((response) => {
         return response.json();
     })
     .then((responseJSON) => {
+
         handlePokemonData(responseJSON);
     })
     .catch((error) => {
@@ -63,3 +66,4 @@ $mainContainer.addEventListener('click', (e)=>{const $card = e.target.parentNode
       getPokemonInfo(pokemonName, $card)
       $card.classList.toggle('flipped')
     }})
+
