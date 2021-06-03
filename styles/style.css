@@ -5,7 +5,7 @@
 }
 
 body{
-    font-family: sans-serif;
+    font-family: 'Bangers', cursive;
     min-height: 100vh;
     background: url(../images/pokemon-bg.png) center center/cover no-repeat;
     /* background-size: 10rem; */
@@ -24,6 +24,8 @@ header{
     border-radius: 0 0 1.2em 1.2em;
     z-index: 1;
 }
+
+
 
 .header__logo-container{
     /* border: 1px solid blue; */
@@ -64,14 +66,15 @@ header{
     box-shadow: 1px 2px 5px 0px #000;
     border-radius: .5em;
     z-index: 0;
-
     transition: all .5s ease;
 }
 
-.pokemons-container__pokemon:hover{
+.pokemons-container__pokemon.flipped{
     transform: rotateY(180deg);
-    transition: all .5s ease;
+}
 
+.pokemons-container__pokemon:hover{
+    cursor: pointer;
 }
 
 .pokemon__front{
@@ -88,12 +91,22 @@ header{
 
 .pokemon__back{
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     width: 100%;
     height: 100%;
+    padding: 3em;
+    padding-top: 5em;
+    border-radius: .5em;
     backface-visibility: hidden;
     transform: rotateY(180deg);
-    background-color: aqua;
-    color: #fff;
+    background: url(../images/pokeball-bg.png) center  10px/60px no-repeat;
+    background-color: white;
+    background-color: rgb(255,217,25);
+    backdrop-filter: blur(77px);
+    font-weight: bold;
+    color: #000;
 
 }
 
@@ -105,13 +118,16 @@ header{
     border-radius: 50%;
 }
 
+.pokemon__front p, .pokemon__back p{
+    letter-spacing: 3px;
+}
 .pokemon__front p{
-    font-weight: bold;
+    /* font-weight: bold; */
     color: #fff;
     padding: .5em;
     border-radius: 5px;
     width: 102%;
-    background-color: red;
+    background-color: rgb(200, 0, 0);
     text-align: center;
 }
 
@@ -129,11 +145,11 @@ header{
     border: 0;
     box-shadow: 0px 3px 10px 1px #000;
     cursor: pointer;
-    transition: transform .4s;
+    transition: transform .3s;
 }
 
 .pagination__btn:hover{
-    transform: translateY(-2px);
+    transform: translateY(-3px);
 }
 
 .pagination__img{
