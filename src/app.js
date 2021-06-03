@@ -1,24 +1,69 @@
+
+const $btnPrev = document.querySelector(".btn-prev");
+const $btnNext = document.querySelector(".btn-next");
+const $mainContainer = document.querySelector("#pokemons");
+
 const amountOfPokemons = 20;
+let clickCounter = 0;
+let interactionCounter = 0;
 let currentPage = 0;
 
+const fetchApi = () => {
+    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${currentPage}`)
 
-const fetchApi = (pokemon) => {
-    fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}?limit=0&offset=${currentPage}`)
     .then((response) => {
         return response.json();
     })
     .then((responseJSON) => {
-        createPokemonFront(amountOfPokemons, responseJSON)
-    }).catch(error=>{
-        console.error(error)
+
+        handlePokemonData(responseJSON);
+    })
+    .catch((error) => {
+        console.error(error);
     });
 };
+fetchApi();
 
-const handlePokemons = () =>{
-    for (let i = currentPage; i < currentPage + 20; i++) {
-        fetchApi(i+1)
-    }
-}
+const getPokemonInfo = (pokemonName,$card) => {
+  fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`).then((response) => {
+    return response.json();
+  }).then((responseJSON)=>{
+      setCardBackInfo(responseJSON, $card)
+  }).catch((error) =>{
+      console.error(error)
+  });
+};
 
-handlePokemons()
+const handlePokemonData = (pokemonData) => {
+  for (let i = 0; i < pokemonData["results"].length; i++) {
+    const keys = Object.keys(pokemonData.results);
+    let index = keys[i];
+    createPokemonCard(index, pokemonData);
+  }
+};
+
+
+$btnNext.addEventListener("click", () => {
+  interactionCounter += 1;
+  clickCounter = clickCounter + 1;
+  currentPage = currentPage + 20;
+  fetchApi();
+});
+
+$btnPrev.addEventListener("click", () => {
+  if (clickCounter > 0) {
+    clickCounter = clickCounter - 1;
+    currentPage = currentPage - 20;
+    fetchApi();
+  } else if (clickCounter < 1) {
+    return "";
+  }
+});
+
+$mainContainer.addEventListener('click', (e)=>{const $card = e.target.parentNode
+    const pokemonName = e.path[0].id
+    if ($card.classList.contains('pokemons-container__pokemon')) {
+      getPokemonInfo(pokemonName, $card)
+      $card.classList.toggle('flipped')
+    }})
 
