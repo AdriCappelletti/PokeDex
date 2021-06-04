@@ -2,7 +2,9 @@
 const $btnPrev = document.querySelector(".btn-prev");
 const $btnNext = document.querySelector(".btn-next");
 const $mainContainer = document.querySelector("#pokemons");
+
 let fetchedPokemons = []
+
 
 const amountOfPokemons = 20;
 let clickCounter = 0;
@@ -18,13 +20,16 @@ const fetchApi = () => {
     .then((responseJSON) => {
 
         handlePokemonData(responseJSON);
+
         fetchedPokemons = []
+
     })
     .catch((error) => {
         console.error(error);
     });
 };
 fetchApi();
+
 
 const getPokemonInfo = (pokemonName,$card) => {
   fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`).then((response) => {
@@ -69,6 +74,7 @@ $mainContainer.addEventListener('click', (e)=>{const $card = e.target.parentNode
     }
     else if ($card.classList.contains('pokemons-container__pokemon')) {
       fetchedPokemons.push(pokemonName)
+
       getPokemonInfo(pokemonName, $card)
       $card.classList.toggle('flipped')
     }})
