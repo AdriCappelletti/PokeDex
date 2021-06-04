@@ -1,3 +1,4 @@
+
 const $pokemonsContainer = document.querySelector(".pokemons-container");
 
 function createPokemonCard(index, pokemonData) {
