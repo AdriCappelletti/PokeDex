@@ -1,6 +1,7 @@
 const $btnPrev = document.querySelector(".btn-prev");
 const $btnNext = document.querySelector(".btn-next");
 const $mainContainer = document.querySelector("#pokemons");
+let fetchedPokemons = []
 
 const amountOfPokemons = 20;
 let clickCounter = 0;
@@ -14,6 +15,7 @@ const fetchApi = () => {
     })
     .then((responseJSON) => {
         handlePokemonData(responseJSON);
+        fetchedPokemons = []
     })
     .catch((error) => {
         console.error(error);
@@ -58,8 +60,12 @@ $btnPrev.addEventListener("click", () => {
 });
 
 $mainContainer.addEventListener('click', (e)=>{const $card = e.target.parentNode
-    const pokemonName = e.path[0].id
-    if ($card.classList.contains('pokemons-container__pokemon')) {
+    const pokemonName = $card.id
+    if (fetchedPokemons.includes(pokemonName)) {
+      $card.classList.toggle('flipped')
+    }
+    else if ($card.classList.contains('pokemons-container__pokemon')) {
+      fetchedPokemons.push(pokemonName)
       getPokemonInfo(pokemonName, $card)
       $card.classList.toggle('flipped')
     }})
