@@ -81,9 +81,6 @@ $mainContainer.addEventListener('click', (e)=>{ const $card = e.target.parentNod
     }})
 
 
-
-    //btnnext onclick -> btnprev remove class focused
-    //btnprev onclick -> btnnext remove class focused
 $pagination.addEventListener('click', (e)=>{
   const $btnPrev = document.querySelector('.btn-prev')
   const $btnNext = document.querySelector('.btn-next')
