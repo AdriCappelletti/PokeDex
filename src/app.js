@@ -2,6 +2,7 @@
 const $btnPrev = document.querySelector(".btn-prev");
 const $btnNext = document.querySelector(".btn-next");
 const $mainContainer = document.querySelector("#pokemons");
+const $pagination = document.querySelector('.pagination')
 
 let fetchedPokemons = []
 
@@ -78,4 +79,23 @@ $mainContainer.addEventListener('click', (e)=>{ const $card = e.target.parentNod
       getPokemonInfo(pokemonName, $card)
       $card.classList.toggle('flipped')
     }})
+
+
+
+    //btnnext onclick -> btnprev remove class focused
+    //btnprev onclick -> btnnext remove class focused
+$pagination.addEventListener('click', (e)=>{
+  const $btnPrev = document.querySelector('.btn-prev')
+  const $btnNext = document.querySelector('.btn-next')
+  const selectedBtn = e.target
+  if (selectedBtn.classList.contains('btn-next')) {
+    selectedBtn.classList.add('focused')
+    $btnPrev.classList.remove('focused')
+  } else if (selectedBtn.classList.contains('btn-prev')) {
+    selectedBtn.classList.add('focused')
+    $btnNext.classList.remove('focused')
+  }
+  
+
+})
 
