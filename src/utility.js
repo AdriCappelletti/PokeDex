@@ -13,7 +13,7 @@ function createPokemonCard(index, pokemonData) {
     overWriteCards(pokemonIndex, pokemonName);
   } else {
     createPokemonFront(pokemonIndex, pokemonName, $pokemonCard);
-    createPokemonCardBack($pokemonCard);
+    createPokemonCardBack($pokemonCard, pokemonIndex);
   }
 }
 
@@ -36,37 +36,51 @@ const createPokemonFront = (pokemonIndex, pokemonName, $pokemonCard) => {
   $pokemonsContainer.appendChild($pokemonCard);
 };
 
-const createPokemonCardBack = ($pokemonCard) => {
+const createPokemonCardBack = ($pokemonCard, pokemonIndex) => {
   const $cardBack = document.createElement("div");
   $cardBack.className = "pokemon__back";
+  $cardBack.id = pokemonIndex
   $pokemonCard.appendChild($cardBack)
-};
-
-const setCardBackInfo = (pokemonInfo, $card) => {
-  // const $cardsBack = document.querySelectorAll(".pokemon__back");
-  const $cardBack = $card.childNodes[1]
-  const pokemonName = pokemonInfo.name;
-  const pokemonAbility = pokemonInfo.abilities[0].ability.name;
-  const pokemonHeight = pokemonInfo.height;
-  const pokemonWeight = pokemonInfo.weight;
   const $nameParagraph = document.createElement("p");
   const $abilityParagraph = document.createElement("p");
   const $heightParagraph = document.createElement("p");
   const $weightParagraph = document.createElement("p");
-  $nameParagraph.textContent = `name: ${pokemonName}`;
-  $abilityParagraph.textContent = `ability: ${pokemonAbility}`;
-  $heightParagraph.textContent = `height: ${pokemonHeight}`;
+  $nameParagraph.className = 'name'
+  $abilityParagraph.className = 'ability'
+  $heightParagraph.className = 'height'
+  $weightParagraph.className = 'weight'
+  $cardBack.appendChild($nameParagraph)
+  $cardBack.appendChild($abilityParagraph)
+  $cardBack.appendChild($heightParagraph)
+  $cardBack.appendChild($weightParagraph)
+};
 
-  $weightParagraph.textContent = `weight: ${pokemonWeight}`;
+const setCardBackInfo = (pokemonInfo, $card) => {
+  const $cardBack = $card.childNodes[1]
+  const index = $cardBack.id
+  const $cards = document.querySelectorAll('.pokemon__back')
+  
+  const pokemonName = pokemonInfo.name;
+  const pokemonAbility = pokemonInfo.abilities[0].ability.name;
+  const pokemonHeight = pokemonInfo.height;
+  const pokemonWeight = pokemonInfo.weight;
+  const $name = document.querySelectorAll('.name')
+  const $ability = document.querySelectorAll('.ability')
+  const $height = document.querySelectorAll('.height')
+  const $weight = document.querySelectorAll('.weight')
+  $name[index].textContent = `name: ${pokemonName}`;
+  $ability[index].textContent = `ability: ${pokemonAbility}`;
+  $height[index].textContent = `height: ${pokemonHeight}`;
+  $weight[index].textContent = `weight: ${pokemonWeight}`;
 
-  $cardBack.appendChild($nameParagraph);
-  $cardBack.appendChild($abilityParagraph);
-  $cardBack.appendChild($heightParagraph);
-  $cardBack.appendChild($weightParagraph);
 };
 
 const overWriteCards = (pokemonIndex, pokemonName) => {
+overWriteCardFront(pokemonIndex, pokemonName)
 
+};
+
+const overWriteCardFront = (pokemonIndex, pokemonName)=>{
   const $pokemonCard = document.querySelectorAll('.pokemons-container__pokemon')
 
   const $pokemonFront = document.querySelectorAll(".pokemon__front");
@@ -80,6 +94,17 @@ const overWriteCards = (pokemonIndex, pokemonName) => {
   $pokemonName[pokemonIndex].textContent = pokemonName;
 
   $pokemonCard[pokemonIndex].id = pokemonName
-};
+}
+
+const overWriteCardBack = ()=>{
+  const $name = document.querySelectorAll('.name')
+  const $ability = document.querySelectorAll('.ability')
+  const $height = document.querySelectorAll('.height')
+  const $weight = document.querySelectorAll('.weight')
+  $nameParagraph.textContent = `name: ${pokemonName}`;
+  $abilityParagraph.textContent = `ability: ${pokemonAbility}`;
+  $heightParagraph.textContent = `height: ${pokemonHeight}`;
+  $weightParagraph.textContent = `weight: ${pokemonWeight}`;
+}
 
 

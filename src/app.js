@@ -31,7 +31,7 @@ const fetchApi = () => {
 fetchApi();
 
 
-const getPokemonInfo = (pokemonName,$card) => {
+const getPokemonInfo = (pokemonName,$card, $cardPath) => {
   fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`).then((response) => {
     return response.json();
   }).then((responseJSON)=>{
@@ -67,7 +67,7 @@ $btnPrev.addEventListener("click", () => {
   }
 });
 
-$mainContainer.addEventListener('click', (e)=>{const $card = e.target.parentNode
+$mainContainer.addEventListener('click', (e)=>{ const $card = e.target.parentNode
     const pokemonName = $card.id
     if (fetchedPokemons.includes(pokemonName)) {
       $card.classList.toggle('flipped')
