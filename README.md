@@ -1,6 +1,6 @@
 # PokeDex
 The PokeDex is a digital pokemon encyclopedia.<br>
-This proyect was built with HTML, CSS, JS vanilla and gets its data from the PokeApi (https://pokeapi.co/)<br>
+This proyect was built with HTML, CSS, JS vanilla and gets its data from PokeApi (https://pokeapi.co/)<br>
 If you want to collab just fork the repo and send your PR.
 --
 
