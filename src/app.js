@@ -31,7 +31,7 @@ const fetchApi = () => {
 fetchApi();
 
 
-const getPokemonInfo = (pokemonName,$card, $cardPath) => {
+const getPokemonInfo = (pokemonName,$card) => {
   fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`).then((response) => {
     return response.json();
   }).then((responseJSON)=>{
