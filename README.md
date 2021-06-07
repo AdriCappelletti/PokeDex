@@ -4,5 +4,5 @@ This proyect was built with HTML, CSS, JS vanilla and gets its data from PokeApi
 If you want to collab just fork the repo and send your PR.
 --
 
-DEMO: https://adricappelletti.github.io/PokeDex/
+<a href="https://adricappelletti.github.io/PokeDex/" target='_blank'>DEMO</a>
 ![ScreenShot](https://github.com/AdriCappelletti/PokeDex/blob/master/images/demo-img.png)
