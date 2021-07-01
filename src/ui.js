@@ -1,4 +1,11 @@
-const $pagination = document.querySelector('.pagination');
+import { getPokemonInfo } from './api.js';
+import {
+  checkPokemonIsFetched, updatePrevPaginationInfo, updateNextPaginationInfo, handlePokemonData,
+} from './utility.js';
+
+const $paginationContainer = document.querySelector('.pagination');
+const $btnPrev = document.querySelector('.btn-prev');
+const $btnNext = document.querySelector('.btn-next');
 
 const createPokemonFront = (pokemonIndex, pokemonName, $pokemonCard, currentPage) => {
   const $pokemonsContainer = document.querySelector('.pokemons-container');
@@ -39,6 +46,24 @@ const createPokemonCardBack = ($pokemonCard, pokemonIndex) => {
   $cardBack.appendChild($weightParagraph);
 };
 
+export const goPrevPage = () => {
+  $btnPrev.addEventListener('click', () => {
+    if (updatePrevPaginationInfo()) {
+      handlePokemonData();
+    }
+    return false;
+  });
+};
+
+export const goNextPage = () => {
+  $btnNext.addEventListener('click', (updatePokemonData) => {
+    if (updateNextPaginationInfo()) {
+      handlePokemonData();
+    }
+    return false;
+  });
+};
+
 export function createPokemonCard(index, pokemonData, currentPage) {
   const pokemonIndex = index;
   const pokemonName = pokemonData.results[pokemonIndex].name;
@@ -48,7 +73,8 @@ export function createPokemonCard(index, pokemonData, currentPage) {
   createPokemonFront(pokemonIndex, pokemonName, $pokemonCard, currentPage);
   createPokemonCardBack($pokemonCard, pokemonIndex);
 }
-export const focusButton = $pagination.addEventListener('click', (e) => {
+
+export const focusButton = $paginationContainer.addEventListener('click', (e) => {
   const $btnPrev = document.querySelector('.btn-prev');
   const $btnNext = document.querySelector('.btn-next');
   const selectedBtn = e.target;
@@ -76,13 +102,39 @@ export const overWriteCardFront = (currentPage, pokemonIndex, pokemonData) => {
   $pokemonCard[pokemonIndex].id = pokemonName;
 };
 
-// const overWriteCardBack = () => {
-//   const $name = document.querySelectorAll('.name');
-//   const $ability = document.querySelectorAll('.ability');
-//   const $height = document.querySelectorAll('.height');
-//   const $weight = document.querySelectorAll('.weight');
-//   $nameParagraph.textContent = `name: ${pokemonName}`;
-//   $abilityParagraph.textContent = `ability: ${pokemonAbility}`;
-//   $heightParagraph.textContent = `height: ${pokemonHeight}`;
-//   $weightParagraph.textContent = `weight: ${pokemonWeight}`;
-// };
+export const setCardBackInfo = ($card, pokemonInfo) => {
+  const $cardBack = $card.childNodes[1];
+  const index = $cardBack.id;
+  const pokemonName = pokemonInfo.name;
+  const pokemonAbility = pokemonInfo.abilities[0].ability.name;
+  const pokemonHeight = pokemonInfo.height;
+  const pokemonWeight = pokemonInfo.weight;
+  const $name = document.querySelectorAll('.name');
+  const $ability = document.querySelectorAll('.ability');
+  const $height = document.querySelectorAll('.height');
+  const $weight = document.querySelectorAll('.weight');
+
+  $name[index].textContent = `name: ${pokemonName}`;
+  $ability[index].textContent = `ability: ${pokemonAbility}`;
+  $height[index].textContent = `height: ${pokemonHeight}`;
+  $weight[index].textContent = `weight: ${pokemonWeight}`;
+};
+
+export const flipCard = ($card) => {
+  $card.classList.toggle('flipped');
+};
+
+const $mainContainer = document.querySelector('#pokemons');
+
+export const handleCardClick = () => {
+  $mainContainer.addEventListener('click', async (e) => {
+    const $card = e.target.parentNode;
+    const pokemonName = $card.id;
+    if (!checkPokemonIsFetched()) {
+      setCardBackInfo($card, await getPokemonInfo(pokemonName));
+      flipCard($card);
+    } else {
+      flipCard($card);
+    }
+  });
+};
