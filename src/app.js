@@ -1,85 +1,51 @@
+import { getPokemonInfo } from './api.js';
+import {
+  handlePokemonData,
+  setCardBackInfo,
+  goNextPage,
+  goPrevPage,
+  flipCard,
+} from './utility.js';
+
+const $mainContainer = document.querySelector('#pokemons');
 const $btnPrev = document.querySelector('.btn-prev');
 const $btnNext = document.querySelector('.btn-next');
-const $mainContainer = document.querySelector('#pokemons');
-const $pagination = document.querySelector('.pagination');
 
-let fetchedPokemons = [];
+function appHandler() {
+  handlePokemonData();
+  const fetchedPokemons = [];
 
-const amountOfPokemons = 20;
-let clickCounter = 0;
-let interactionCounter = 0;
-let currentPage = 0;
+  $mainContainer.addEventListener('click', async (e) => {
+    const $card = e.target.parentNode;
+    const pokemonName = $card.id;
 
-const fetchApi = () => {
-  fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${currentPage}`)
-
-    .then((response) => response.json())
-    .then((responseJSON) => {
-      handlePokemonData(responseJSON);
-
-      fetchedPokemons = [];
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-};
-fetchApi();
-
-const getPokemonInfo = (pokemonName, $card) => {
-  fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`).then((response) => response.json()).then((responseJSON) => {
-    setCardBackInfo(responseJSON, $card);
-  }).catch((error) => {
-    console.error(error);
+    if (!fetchedPokemons.includes(pokemonName)) {
+      fetchedPokemons.push(pokemonName);
+      const pokemonInfo = await getPokemonInfo(pokemonName);
+      setCardBackInfo($card, pokemonInfo);
+      flipCard($card);
+    } else if (fetchedPokemons.includes(pokemonName)) {
+      flipCard($card);
+    }
   });
-};
 
-const handlePokemonData = (pokemonData) => {
-  for (let i = 0; i < pokemonData.results.length; i++) {
-    const keys = Object.keys(pokemonData.results);
-    const index = keys[i];
-    createPokemonCard(index, pokemonData);
-  }
-};
+  $btnNext.addEventListener('click', () => {
+    goNextPage();
+    handlePokemonData();
+  });
 
-$btnNext.addEventListener('click', () => {
-  interactionCounter += 1;
-  clickCounter += 1;
-  currentPage += 20;
-  fetchApi();
-});
+  $btnPrev.addEventListener('click', () => {
+    if (goPrevPage()) {
+      handlePokemonData();
+    }
+  });
+}
 
-$btnPrev.addEventListener('click', () => {
-  if (clickCounter > 0) {
-    clickCounter -= 1;
-    currentPage -= 20;
-    fetchApi();
-  } else if (clickCounter < 1) {
-    return '';
-  }
-});
+appHandler();
 
-$mainContainer.addEventListener('click', (e) => {
-  const $card = e.target.parentNode;
-  const pokemonName = $card.id;
-  if (fetchedPokemons.includes(pokemonName)) {
-    $card.classList.toggle('flipped');
-  } else if ($card.classList.contains('pokemons-container__pokemon')) {
-    fetchedPokemons.push(pokemonName);
-
-    getPokemonInfo(pokemonName, $card);
-    $card.classList.toggle('flipped');
-  }
-});
-
-$pagination.addEventListener('click', (e) => {
-  const $btnPrev = document.querySelector('.btn-prev');
-  const $btnNext = document.querySelector('.btn-next');
-  const selectedBtn = e.target;
-  if (selectedBtn.classList.contains('btn-next')) {
-    selectedBtn.classList.add('focused');
-    $btnPrev.classList.remove('focused');
-  } else if (selectedBtn.classList.contains('btn-prev')) {
-    selectedBtn.classList.add('focused');
-    $btnNext.classList.remove('focused');
-  }
-});
+// Swal.fire({
+//   icon: 'error',
+//   title: 'Oops...',
+//   text: 'Something went wrong!',
+//   footer: '<a href="">Why do I have this issue?</a>',
+// });
