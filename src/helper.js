@@ -2,19 +2,19 @@ import { createPokemonCard, overWriteCardFront } from './ui.js';
 import { fetchApi } from './api.js';
 
 let clickCounter = 0;
-let currentPage = 0;
+let currentOffset = 0;
 const maxAmountOfpages = 44;
 let cardsCreated = false;
 
 export const handlePokemonData = async (pokemonData) => {
-  pokemonData = await fetchApi(currentPage);
+  pokemonData = await fetchApi(currentOffset);
   for (let i = 0; i < pokemonData.results.length; i += 1) {
     const keys = Object.keys(pokemonData.results);
     const index = Number(keys[i]);
     if (cardsCreated) {
-      overWriteCardFront(currentPage, index, pokemonData);
+      overWriteCardFront(currentOffset, index, pokemonData);
     } else {
-      createPokemonCard(index, pokemonData, cardsCreated, currentPage);
+      createPokemonCard(index, pokemonData, cardsCreated, currentOffset);
     }
   }
   cardsCreated = true;
@@ -23,8 +23,8 @@ export const handlePokemonData = async (pokemonData) => {
 export const updateNextPaginationInfo = () => {
   if (clickCounter < maxAmountOfpages && clickCounter >= 0) {
     clickCounter += 1;
-    currentPage += 20;
-    return currentPage;
+    currentOffset += 20;
+    return currentOffset;
   }
   return false;
 };
@@ -32,8 +32,8 @@ export const updateNextPaginationInfo = () => {
 export const updatePrevPaginationInfo = () => {
   if (clickCounter > 0) {
     clickCounter -= 1;
-    currentPage -= 20;
-    return currentPage;
+    currentOffset -= 20;
+    return currentOffset;
   }
   return false;
 };
@@ -41,10 +41,11 @@ export const updatePrevPaginationInfo = () => {
 const fetchedPokemons = [];
 
 export const checkPokemonIsFetched = (pokemonName) => {
-  if (!fetchedPokemons.includes(pokemonName)) {
+  const pokemonExist = fetchedPokemons.includes(pokemonName);
+  if (!pokemonExist) {
     fetchedPokemons.push(pokemonName);
     return false;
-  } if (fetchedPokemons.includes(pokemonName)) {
+  } if (pokemonExist) {
     return true;
   }
 };

@@ -1,9 +1,9 @@
 import { handleCardClick, goNextPage, goPrevPage } from './ui.js';
 import {
   handlePokemonData,
-} from './utility.js';
+} from './helper.js';
 
-async function appHandler() {
+async function setupAppHandler() {
   handlePokemonData();
   handleCardClick();
 }
@@ -13,5 +13,5 @@ async function paginationHandler() {
   goNextPage();
 }
 
-appHandler();
+setupAppHandler();
 paginationHandler();

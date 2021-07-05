@@ -1,7 +1,7 @@
 import { getPokemonInfo } from './api.js';
 import {
   checkPokemonIsFetched, updatePrevPaginationInfo, updateNextPaginationInfo, handlePokemonData,
-} from './utility.js';
+} from './helper.js';
 
 const $paginationContainer = document.querySelector('.pagination');
 const $btnPrev = document.querySelector('.btn-prev');
@@ -48,7 +48,8 @@ const createPokemonCardBack = ($pokemonCard, pokemonIndex) => {
 
 export const goPrevPage = () => {
   $btnPrev.addEventListener('click', () => {
-    if (updatePrevPaginationInfo()) {
+    const currentOffset = updatePrevPaginationInfo();
+    if (currentOffset >= 0) {
       handlePokemonData();
     }
     return false;
@@ -56,8 +57,9 @@ export const goPrevPage = () => {
 };
 
 export const goNextPage = () => {
-  $btnNext.addEventListener('click', (updatePokemonData) => {
-    if (updateNextPaginationInfo()) {
+  $btnNext.addEventListener('click', () => {
+    const currentOffset = updateNextPaginationInfo();
+    if (currentOffset >= 0) {
       handlePokemonData();
     }
     return false;
@@ -75,8 +77,6 @@ export function createPokemonCard(index, pokemonData, currentPage) {
 }
 
 export const focusButton = $paginationContainer.addEventListener('click', (e) => {
-  const $btnPrev = document.querySelector('.btn-prev');
-  const $btnNext = document.querySelector('.btn-next');
   const selectedBtn = e.target;
   if (selectedBtn.classList.contains('btn-next')) {
     selectedBtn.classList.add('focused');
@@ -130,7 +130,7 @@ export const handleCardClick = () => {
   $mainContainer.addEventListener('click', async (e) => {
     const $card = e.target.parentNode;
     const pokemonName = $card.id;
-    if (!checkPokemonIsFetched()) {
+    if (!checkPokemonIsFetched(pokemonName)) {
       setCardBackInfo($card, await getPokemonInfo(pokemonName));
       flipCard($card);
     } else {
