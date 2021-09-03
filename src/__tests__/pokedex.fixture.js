@@ -1,5 +1,4 @@
-export default `
-<header>
+export default `<header>
     <div class="header__logo-container">
         <a href=""><img src="./images/Pokédex_logo.png" alt="pokemon logo" /></a>
     </div>
@@ -17,6 +16,4 @@ export default `
 <footer>
     Coded By:&nbsp;<a href="https://github.com/AdriCappelletti">Adri Cappelletti </a><img src="./images/violet-bulb.png" alt="">
 </footer>
-<script src="./src/app.js" type="module"></script>
-<!-- <script src="./src/utility.js"></script> -->
 </body>`;

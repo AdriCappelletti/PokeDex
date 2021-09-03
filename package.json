@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint",
-    "test": "jest --collect-coverage",
-    "test:dev": "jest --watch"
+    "test": "jest --collect-coverage --env=jsdom",
+    "test:dev": "jest --watch "
   },
   "repository": {
     "type": "git",
