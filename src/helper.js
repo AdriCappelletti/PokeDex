@@ -1,4 +1,6 @@
-import { createPokemonCard, overWriteCardFront } from './ui.js';
+import {
+  createPokemonCard, overWriteCardFront, getInputText, highLightPokemon,
+} from './ui/ui.js';
 import { fetchApi } from './api.js';
 
 let clickCounter = 0;
@@ -9,6 +11,8 @@ let cardsCreated = false;
 export const handlePokemonData = async (pokemonData) => {
   pokemonData = await fetchApi(currentOffset);
   for (let i = 0; i < pokemonData.results.length; i += 1) {
+    const pokemonName = pokemonData.results[i].name;
+    checkPokemonIsFetched(pokemonName);
     const keys = Object.keys(pokemonData.results);
     const index = Number(keys[i]);
     if (cardsCreated) {
@@ -48,4 +52,21 @@ export const checkPokemonIsFetched = (pokemonName) => {
   } if (pokemonExist) {
     return true;
   }
+};
+
+export const searchPokemon = () => {
+  document.querySelector('#search-pokemon').addEventListener('keyup', (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      const pokemonName = getInputText('#search-pokemon');
+      const pokemonExist = checkPokemonIsFetched(pokemonName);
+      if (pokemonExist) {
+        highLightPokemon(pokemonName);
+      }
+      if (!pokemonExist) {
+        const pokemonData = fetchApi(pokemonName);
+        createPokemonCard(pokemonName, pokemonData);
+      }
+    }
+  });
 };

@@ -1,11 +1,7 @@
-import { getPokemonInfo } from './api.js';
+import { getPokemonInfo } from '../api.js';
 import {
   checkPokemonIsFetched, updatePrevPaginationInfo, updateNextPaginationInfo, handlePokemonData,
-} from './helper.js';
-
-const $paginationContainer = document.querySelector('.pagination');
-const $btnPrev = document.querySelector('.btn-prev');
-const $btnNext = document.querySelector('.btn-next');
+} from '../helper.js';
 
 const createPokemonFront = (pokemonIndex, pokemonName, $pokemonCard, currentPage) => {
   const $pokemonsContainer = document.querySelector('.pokemons-container');
@@ -47,20 +43,24 @@ const createPokemonCardBack = ($pokemonCard, pokemonIndex) => {
 };
 
 export const goPrevPage = () => {
+  const $btnPrev = document.querySelector('.btn-prev');
+
   $btnPrev.addEventListener('click', () => {
     const currentOffset = updatePrevPaginationInfo();
     if (currentOffset >= 0) {
-      handlePokemonData();
+      return handlePokemonData();
     }
     return false;
   });
 };
 
 export const goNextPage = () => {
+  const $btnNext = document.querySelector('.btn-next');
+
   $btnNext.addEventListener('click', () => {
     const currentOffset = updateNextPaginationInfo();
     if (currentOffset >= 0) {
-      handlePokemonData();
+      return handlePokemonData();
     }
     return false;
   });
@@ -76,15 +76,18 @@ export function createPokemonCard(index, pokemonData, currentPage) {
   createPokemonCardBack($pokemonCard, pokemonIndex);
 }
 
-export const focusButton = $paginationContainer.addEventListener('click', (e) => {
-  const selectedBtn = e.target;
-  if (selectedBtn.classList.contains('btn-next')) {
-    selectedBtn.classList.add('focused');
-    $btnPrev.classList.remove('focused');
-  } else if (selectedBtn.classList.contains('btn-prev')) {
-    selectedBtn.classList.add('focused');
-    $btnNext.classList.remove('focused');
-  }
+export const focusButton = document.addEventListener('DOMContentLoaded', () => {
+  const $paginationContainer = document.querySelector('.pagination');
+  $paginationContainer.addEventListener('click', (e) => {
+    const selectedBtn = e.target;
+    if (selectedBtn.classList.contains('btn-next')) {
+      selectedBtn.classList.add('focused');
+      $btnPrev.classList.remove('focused');
+    } else if (selectedBtn.classList.contains('btn-prev')) {
+      selectedBtn.classList.add('focused');
+      $btnNext.classList.remove('focused');
+    }
+  });
 });
 
 export const overWriteCardFront = (currentPage, pokemonIndex, pokemonData) => {
@@ -137,4 +140,25 @@ export const handleCardClick = () => {
       flipCard($card);
     }
   });
+};
+
+export const getInputText = (input) => {
+  const text = document.querySelector(input).value;
+  return text;
+};
+
+const scrollToPokemon = (pokemonName) => {
+  const $pokemonCard = document.querySelector(`#${pokemonName}`);
+  $pokemonCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+};
+
+export const highLightPokemon = (pokemonName) => {
+  scrollToPokemon(pokemonName);
+  const $pokemonCard = document.querySelector(`#${pokemonName}`);
+  setTimeout(() => {
+    $pokemonCard.classList.toggle('highlighted');
+  }, 1000);
+  setTimeout(() => {
+    $pokemonCard.classList.toggle('highlighted');
+  }, 1500);
 };
