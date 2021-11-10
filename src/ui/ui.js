@@ -28,6 +28,7 @@ const createPokemonCardBack = ($pokemonCard, pokemonIndex) => {
   $cardBack.className = 'pokemon__back';
   $cardBack.id = pokemonIndex;
   $pokemonCard.appendChild($cardBack);
+
   const $nameParagraph = document.createElement('p');
   const $abilityParagraph = document.createElement('p');
   const $heightParagraph = document.createElement('p');
@@ -79,6 +80,8 @@ export function createPokemonCard(index, pokemonData, currentPage) {
 export const focusButton = document.addEventListener('DOMContentLoaded', () => {
   const $paginationContainer = document.querySelector('.pagination');
   $paginationContainer.addEventListener('click', (e) => {
+    const $btnPrev = document.querySelector('.btn-prev');
+    const $btnNext = document.querySelector('.btn-next');
     const selectedBtn = e.target;
     if (selectedBtn.classList.contains('btn-next')) {
       selectedBtn.classList.add('focused');

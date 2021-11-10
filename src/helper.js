@@ -12,7 +12,7 @@ export const handlePokemonData = async (pokemonData) => {
   pokemonData = await fetchApi(currentOffset);
   for (let i = 0; i < pokemonData.results.length; i += 1) {
     const pokemonName = pokemonData.results[i].name;
-    checkPokemonIsFetched(pokemonName);
+    // checkPokemonIsFetched(pokemonName);
     const keys = Object.keys(pokemonData.results);
     const index = Number(keys[i]);
     if (cardsCreated) {
@@ -49,9 +49,7 @@ export const checkPokemonIsFetched = (pokemonName) => {
   if (!pokemonExist) {
     fetchedPokemons.push(pokemonName);
     return false;
-  } if (pokemonExist) {
-    return true;
-  }
+  } return pokemonExist
 };
 
 export const searchPokemon = () => {
